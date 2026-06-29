@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #F8F8F7;
+  color: #1A1A18;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #E8E7E4; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9B9A97; }
+
+/* ─── Calendar fixed-size container ────────────────────────────
+   Gives the calendar a stable height that never changes when
+   navigating between months with 4, 5, or 6 rows.
+   Min-height covers 6 rows × 100px + toolbar + header ≈ 700px.
+──────────────────────────────────────────────────────────────── */
+.rbc-fixed-container {
+  height: 720px;
+}
+
+/* ─── React Big Calendar ─────────────────────────────────────── */
+.rbc-calendar {
+  font-family: 'DM Sans', sans-serif;
+  background: white;
+  border-radius: 12px;
+}
+
+/* Toolbar */
+.rbc-toolbar {
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rbc-toolbar button {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A18;
+  border-radius: 8px;
+  border: 1px solid #E8E7E4;
+  padding: 5px 12px;
+  background: white;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.rbc-toolbar button:hover { background: #F0EFED; }
+.rbc-toolbar button:focus { outline: none; box-shadow: 0 0 0 2px rgba(35,131,226,0.2); }
+.rbc-toolbar button.rbc-active { background: #2383E2; color: white; border-color: #2383E2; }
+.rbc-toolbar button.rbc-active:hover { background: #1a6fc4; }
+.rbc-toolbar-label { font-size: 15px; font-weight: 600; color: #1A1A18; }
+
+/* Day-name header row */
+.rbc-header {
+  padding: 8px 0;
+  font-weight: 500;
+  font-size: 11px;
+  color: #9B9A97;
+  border-bottom: 1px solid #F0EFED;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.rbc-header + .rbc-header { border-left: 1px solid #F0EFED; }
+
+/* Month grid */
+.rbc-month-view {
+  border: 1px solid #F0EFED;
+  border-radius: 10px;
+  overflow: hidden;
+  /* flex layout so rows share space evenly without growing the container */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each week row gets an equal share of the available height.
+   min-height:0 lets flex shrink rows when there are 6 of them
+   so the container never overflows its fixed parent. */
+.rbc-month-row {
+  border-top: 1px solid #F0EFED;
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Day background cells */
+.rbc-day-bg + .rbc-day-bg { border-left: 1px solid #F0EFED; }
+
+/* Date numbers */
+.rbc-date-cell {
+  padding: 5px 7px;
+  font-size: 11px;
+  color: #6B6B6B;
+  text-align: right;
+}
+.rbc-date-cell.rbc-now a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #2383E2;
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+}
+.rbc-off-range-bg { background: #F8F8F7; }
+.rbc-off-range .rbc-date-cell a { color: #C9C8C5; }
+.rbc-today { background: #EFF6FF !important; }
+
+/* Events */
+.rbc-event {
+  background: #2383E2;
+  border: none;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 18px;
+}
+.rbc-event:focus { outline: none; box-shadow: 0 0 0 2px rgba(35,131,226,0.4); }
+.rbc-event-label { display: none; }
+.rbc-show-more {
+  font-size: 10px;
+  font-weight: 600;
+  color: #2383E2;
+  background: transparent;
+  padding: 1px 5px;
+  cursor: pointer;
+}
+
+/* Week / Day view */
+.rbc-time-view { border: 1px solid #F0EFED; border-radius: 10px; overflow: hidden; }
+.rbc-time-header { border-bottom: 1px solid #F0EFED; }
+.rbc-time-content { border-top: 1px solid #F0EFED; }
+.rbc-timeslot-group { border-bottom: 1px solid #F0EFED; min-height: 44px; }
+.rbc-time-slot { font-size: 11px; color: #9B9A97; }
+.rbc-current-time-indicator { background: #E84040; height: 2px; }
+
+/* Agenda */
+.rbc-agenda-view table.rbc-agenda-table {
+  border: 1px solid #F0EFED;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 13px;
+}
+.rbc-agenda-table thead > tr > th { border-bottom: 1px solid #F0EFED; padding: 8px 12px; font-weight: 500; color: #9B9A97; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+.rbc-agenda-table tbody > tr > td { padding: 10px 12px; border-bottom: 1px solid #F0EFED; }
+.rbc-agenda-table tbody > tr:last-child > td { border-bottom: none; }
+.rbc-agenda-event-cell { font-weight: 500; }
+.rbc-agenda-empty { color: #9B9A97; padding: 24px; text-align: center; font-size: 13px; }
+
+/* ─── React DatePicker ───────────────────────────────────────── */
+.react-datepicker-wrapper { width: 100%; }
+.react-datepicker__input-container { width: 100%; }
+.react-datepicker__input-container input { width: 100%; }
+
+/* Clear (×) button */
+.react-datepicker__close-icon { right: 8px; padding: 0; }
+.react-datepicker__close-icon::after {
+  background: #9B9A97;
+  color: white;
+  font-size: 11px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.react-datepicker__close-icon:hover::after { background: #E84040; }
+
+/* Popup wrapper */
+.react-datepicker {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  border: 1px solid #E8E7E4;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+.react-datepicker-popper { z-index: 9999; }
+
+/* Header */
+.react-datepicker__header {
+  background: #F8F8F7;
+  border-bottom: 1px solid #E8E7E4;
+  border-radius: 12px 12px 0 0;
+  padding: 10px 0 6px;
+}
+.react-datepicker__current-month { font-size: 13px; font-weight: 600; color: #1A1A18; margin-bottom: 6px; }
+
+/* Month/Year dropdowns */
+.react-datepicker__month-select,
+.react-datepicker__year-select {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  border: 1px solid #E8E7E4;
+  border-radius: 6px;
+  padding: 2px 4px;
+  background: white;
+  color: #1A1A18;
+  cursor: pointer;
+}
+
+/* Nav arrows */
+.react-datepicker__navigation { top: 10px; }
+.react-datepicker__navigation-icon::before { border-color: #9B9A97; }
+.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before { border-color: #1A1A18; }
+
+/* Day-name row */
+.react-datepicker__day-names { margin-top: 4px; }
+.react-datepicker__day-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: #9B9A97;
+  text-transform: uppercase;
+  width: 32px;
+  line-height: 32px;
+}
+
+/* The month grid — fixed height so popup never jumps between
+   4-row months (Feb) and 6-row months (some Jan/Mar).
+   6 rows × 32px + tiny gaps ≈ 196px. */
+.react-datepicker__month {
+  min-height: 196px;
+}
+
+/* Day cells */
+.react-datepicker__day {
+  width: 32px;
+  line-height: 32px;
+  border-radius: 50%;
+  color: #1A1A18;
+  font-size: 12px;
+  transition: background 0.12s;
+}
+.react-datepicker__day:hover { background: #EFF6FF; border-radius: 50%; }
+.react-datepicker__day--today { font-weight: 700; color: #2383E2; }
+.react-datepicker__day--selected,
+.react-datepicker__day--selected:hover { background: #2383E2; color: white; border-radius: 50%; }
+.react-datepicker__day--keyboard-selected { background: #EFF6FF; color: #2383E2; border-radius: 50%; }
+.react-datepicker__day--outside-month { color: #C9C8C5; }
+.react-datepicker__day--disabled { color: #C9C8C5; cursor: not-allowed; }
+
+/* Time picker */
+.react-datepicker__time-container { border-left: 1px solid #E8E7E4; width: 100px; }
+.react-datepicker__time-container .react-datepicker__time { border-radius: 0 0 12px 0; }
+.react-datepicker__time-container .react-datepicker__time-box { width: 100px; }
+.react-datepicker__time-list-item {
+  font-size: 12px;
+  padding: 6px 10px !important;
+  height: auto !important;
+  display: flex;
+  align-items: center;
+}
+.react-datepicker__time-list-item:hover { background: #EFF6FF !important; color: #2383E2; }
+.react-datepicker__time-list-item--selected { background: #2383E2 !important; color: white !important; font-weight: 600; }
+.react-datepicker-time__header { font-size: 11px; font-weight: 600; color: #9B9A97; text-transform: uppercase; letter-spacing: 0.04em; }
